@@ -2,7 +2,7 @@ const router = require('express').Router();
 const asyncWrapper = require('../util/asyncWrapper');
 
 
-router.get('/', (req, res) => res.redirect('/products')); 
+router.get('/', (req, res) => res.redirect('/trip')); 
 
 
 router.get('/about', asyncWrapper(async (req, res) => {

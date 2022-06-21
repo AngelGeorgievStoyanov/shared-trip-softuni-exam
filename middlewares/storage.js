@@ -1,10 +1,10 @@
-// const productService = require('../services/product');
-// async function init() {
-//     return (req, res, next) => {
-//         const storage = Object.assign({}, productService);
-//         req.storage = storage;
-//         next();
-//     };
-// }
+const tripService = require('../services/trip');
+async function init() {
+    return (req, res, next) => {
+        const storage = Object.assign({}, tripService);
+        req.storage = storage;
+        next();
+    };
+}
 
-// module.exports = init;
+module.exports = init;

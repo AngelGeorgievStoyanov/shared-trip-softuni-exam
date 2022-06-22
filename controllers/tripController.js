@@ -1,16 +1,14 @@
 const { Router } = require('express');
-
-
+const { preloadTrip } = require('../middlewares/preload')
+const userService = require('../services/user')
 const router = Router();
 
 
 
 router.get('/', async (req, res) => {
 
-    const trips = await req.storage.getAll(req.query)
 
-    console.log(trips, '----trips----')
-    res.render('index', trips)
+    res.render('index')
 })
 
 
@@ -63,17 +61,64 @@ router.get('/shared', async (req, res) => {
     const trips = await req.storage.getAll(req.query)
 
 
-    const ctx ={
-        title:'Trips',
+    const ctx = {
+        title: 'Trips',
         trips
     }
 
     console.log(trips, '----trips----')
     res.render('shared', ctx)
 
-
-
-
 })
+
+router.get('/details/:id', preloadTrip(), async (req, res) => {
+
+    const trip = req.data.trip;
+    const ownerTrip = await userService.getUserById(trip.creator)
+    const driver = ownerTrip.email
+    const isuser = req.user;
+    let isowner = false;
+    if (trip == undefined) {
+        res.redirect('/404');
+    } else {
+        let userBuddie = false;
+        let buddies;
+
+        if (req.user) {
+
+            if (req.data.trip.creator._id == req.user._id) {
+                isowner = true;
+            }
+
+            buddies = trip.buddies;
+
+            for (const buddie of buddies) {
+
+                if (buddie == req.user._id) {
+                    userBuddie = true;
+                    break;
+                }
+
+            }
+
+
+
+
+        }
+
+        const ctx = {
+            title: 'Trip',
+            trip,
+            ownerTrip,
+            driver,
+            isuser,
+            isowner,
+            userBuddie
+        }
+
+
+        res.render('details', ctx);
+    }
+});
 
 module.exports = router;

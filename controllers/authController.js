@@ -38,7 +38,7 @@ router.get('/login', (req, res) => {
 
 router.post('/login',  async (req, res) => {
     try {
-        console.log(req.body,'----------------')
+     
         await req.auth.login(req.body);
         res.redirect('/trip');
     } catch (err) {

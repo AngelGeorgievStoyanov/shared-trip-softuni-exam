@@ -30,7 +30,7 @@ module.exports = () => (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await userService.createUser(email, hashedPassword, gender);
-        console.log(user, '----user---')
+   
         req.user = createToken(user);
 
 

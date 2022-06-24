@@ -48,9 +48,26 @@ async function getById(id) {
     }
 }
 
+async function joinTrip(id, trip) {
+    const exsisting = await Trip.findById(id);
+
+    if (!exsisting) {
+        throw new ReferenceError('No such ID in database');
+    }
+
+    Object.assign(exsisting,trip);
+    return exsisting.save();
+}
+
+async function getUserById(id){
+    return await User.findById(id).lean()
+}
+
 
 module.exports = {
     create,
     getAll,
-    getById
+    getById,
+    joinTrip,
+    getUserById
 }

@@ -19,7 +19,7 @@ async function getUserByEmail(email) {
 }
 
 async function getUserById(id){
-    return await User.findById(id)
+    return await User.findById(id).lean()
 }
 
 

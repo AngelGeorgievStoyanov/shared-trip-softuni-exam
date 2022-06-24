@@ -101,10 +101,22 @@ router.get('/details/:id', preloadTrip(), async (req, res) => {
 
             }
 
-
-
-
         }
+
+        let arr = trip.buddies;
+
+        const userJoined = await Promise.all(
+            arr.map(async (element) => {
+                console.log(element, '---element----')
+                let a = req.storage.getUserById(element)
+                console.log(a, '---a------')
+                return a;
+            })
+        )
+
+        console.log(userJoined, '--userArr---')
+
+        const allUsersJoined = userJoined.map((x) => { return x.email }).join(', ')
 
         const ctx = {
             title: 'Trip',
@@ -113,12 +125,38 @@ router.get('/details/:id', preloadTrip(), async (req, res) => {
             driver,
             isuser,
             isowner,
-            userBuddie
+            userBuddie,
+            allUsersJoined
         }
 
 
         res.render('details', ctx);
     }
 });
+
+
+router.get('/join/:id', preloadTrip(), async (req, res) => {
+    const trip = req.data.trip;
+
+    trip.seats--;
+
+    const userId = req.user._id;
+
+    trip.buddies.push(userId);
+    const ctx = {
+        title: 'Trip',
+        trip
+    };
+
+    try {
+        await req.storage.joinTrip(trip._id, trip)
+
+
+    } catch (err) {
+        error = err.message
+    }
+
+    res.redirect(`/trip/details/${trip._id}`)
+})
 
 module.exports = router;

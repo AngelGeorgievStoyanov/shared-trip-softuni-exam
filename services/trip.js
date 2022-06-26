@@ -63,11 +63,23 @@ async function getUserById(id){
     return await User.findById(id).lean()
 }
 
+async function edit(id,trip){
+    const exsisting = await Trip.findById(id);
+
+    if (!exsisting) {
+        throw new ReferenceError('No such ID in database');
+    }
+
+    Object.assign(exsisting,trip);
+    return exsisting.save();
+
+}
 
 module.exports = {
     create,
     getAll,
     getById,
     joinTrip,
-    getUserById
+    getUserById,
+    edit
 }

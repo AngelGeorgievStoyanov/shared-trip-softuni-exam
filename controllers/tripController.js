@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { preloadTrip } = require('../middlewares/preload')
+const { isOwner } = require('../middlewares/guards')
 const userService = require('../services/user')
 const router = Router();
 
@@ -157,6 +158,48 @@ router.get('/join/:id', preloadTrip(), async (req, res) => {
     }
 
     res.redirect(`/trip/details/${trip._id}`)
+})
+
+
+router.get('/edit/:id', preloadTrip(), isOwner(), async (req, res) => {
+    const trip = req.data.trip;
+
+
+    if (!trip) {
+        res.redirect('/404')
+    } else {
+        const ctx = {
+            title: 'Edit trip',
+            trip
+        }
+        res.render('edit', ctx)
+    }
+})
+
+router.post('/edit/:id', async (req, res) => {
+    const trip = {
+        startPoint: req.body.startPoint,
+        endPoint: req.body.endPoint,
+        date: req.body.date,
+        time: req.body.time,
+        imageUrl: req.body.imageUrl,
+        brand: req.body.brand,
+        seats: Number(req.body.seats),
+        price: Number(req.body.price),
+    }
+   
+
+    try {
+        await req.storage.edit(req.params.id, trip)
+        res.redirect(`/trip/details/${req.params.id}`)
+    } catch (err) {
+        const ctx = {
+            title: 'Edit Trip',
+            error: err.message,
+            trip
+        };
+        res.render('edit', ctx)
+    }
 })
 
 module.exports = router;

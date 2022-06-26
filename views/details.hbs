@@ -41,8 +41,8 @@
                 <div class="actions">
                     {{#if isowner}}
                     <!-- Only for logged user and creator to this trip -->
-                    <a href="/trip/edit/{{trip._id}}" class="btn btn-danger">Delete this trip</a>
-                    <a href="/trip/delete/{{trip._id}}" class="btn btn-warning">Edit this trip</a>
+                    <a href="/trip/delete/{{trip._id}}" class="btn btn-danger">Delete this trip</a>
+                    <a href="/trip/edit/{{trip._id}}" class="btn btn-warning">Edit this trip</a>
                     {{else}}
                     {{#if trip.seats}}
                     {{#if userBuddie}}

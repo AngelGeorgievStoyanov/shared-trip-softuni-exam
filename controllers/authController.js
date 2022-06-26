@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const { body } = require('express-validator');
 
 
 
@@ -13,7 +12,7 @@ router.post('/register', async (req, res) => {
     try {
 
 
-      console.log(req.body,'---req body---')
+       
         await req.auth.register(req.body);
         res.redirect('/trip');
     } catch (err) {
@@ -36,9 +35,9 @@ router.get('/login', (req, res) => {
 
 
 
-router.post('/login',  async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
-     
+
         await req.auth.login(req.body);
         res.redirect('/trip');
     } catch (err) {
@@ -54,13 +53,25 @@ router.post('/login',  async (req, res) => {
     }
 });
 
-router.get('/profile', (req, res) => {
-    res.render('profile', { title: 'Profile' });
+router.get('/profile', async(req, res) => {
+
+    const user = req.user;
+
+    const trips = await req.storage.getAllTrips(user._id)
+  
+
+    const ctx = {
+        title: 'Profile',
+        user,
+        trips
+    }
+    console.log(user, '--user---')
+    res.render('profile',ctx);
 });
 
 
 router.get('/logout', (req, res) => {
-     req.auth.logout();
+    req.auth.logout();
     res.redirect('/');
 });
 

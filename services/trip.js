@@ -78,6 +78,11 @@ function deleteTrip(tripId) {
     return Trip.deleteOne({ _id: tripId })
 }
 
+async function getAllTrips(userId) {
+    
+    return await Trip.find({ "creator": `${userId}` }).lean();
+}
+
 module.exports = {
     create,
     getAll,
@@ -85,5 +90,6 @@ module.exports = {
     joinTrip,
     getUserById,
     edit,
-    deleteTrip
+    deleteTrip,
+    getAllTrips
 }

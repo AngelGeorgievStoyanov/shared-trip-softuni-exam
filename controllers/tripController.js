@@ -40,7 +40,7 @@ router.post('/create', async (req, res) => {
 
 
     try {
-        console.log(trip, '---trip-----')
+      
         await req.storage.create(trip);
 
         res.redirect('/')
@@ -67,7 +67,7 @@ router.get('/shared', async (req, res) => {
         trips
     }
 
-    console.log(trips, '----trips----')
+   
     res.render('shared', ctx)
 
 })
@@ -108,14 +108,14 @@ router.get('/details/:id', preloadTrip(), async (req, res) => {
 
         const userJoined = await Promise.all(
             arr.map(async (element) => {
-                console.log(element, '---element----')
+             
                 let a = req.storage.getUserById(element)
-                console.log(a, '---a------')
+              
                 return a;
             })
         )
 
-        console.log(userJoined, '--userArr---')
+      
 
         const allUsersJoined = userJoined.map((x) => { return x.email }).join(', ')
 
@@ -209,7 +209,6 @@ router.get('/delete/:id',preloadTrip(),isOwner(), async (req, res) => {
     if (!trip) {
         res.redirect('/404')
     } else {
-        console.log(trip,'----id---')
        await req.storage.deleteTrip(trip._id);
        res.redirect('/trip/shared')
     }

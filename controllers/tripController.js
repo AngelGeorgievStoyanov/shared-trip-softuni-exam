@@ -187,7 +187,7 @@ router.post('/edit/:id', async (req, res) => {
         seats: Number(req.body.seats),
         price: Number(req.body.price),
     }
-   
+
 
     try {
         await req.storage.edit(req.params.id, trip)
@@ -199,6 +199,19 @@ router.post('/edit/:id', async (req, res) => {
             trip
         };
         res.render('edit', ctx)
+    }
+})
+
+router.get('/delete/:id',preloadTrip(),isOwner(), async (req, res) => {
+    const trip = req.data.trip;
+
+
+    if (!trip) {
+        res.redirect('/404')
+    } else {
+        console.log(trip,'----id---')
+       await req.storage.deleteTrip(trip._id);
+       res.redirect('/trip/shared')
     }
 })
 

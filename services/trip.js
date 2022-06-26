@@ -55,24 +55,27 @@ async function joinTrip(id, trip) {
         throw new ReferenceError('No such ID in database');
     }
 
-    Object.assign(exsisting,trip);
+    Object.assign(exsisting, trip);
     return exsisting.save();
 }
 
-async function getUserById(id){
+async function getUserById(id) {
     return await User.findById(id).lean()
 }
 
-async function edit(id,trip){
+async function edit(id, trip) {
     const exsisting = await Trip.findById(id);
 
     if (!exsisting) {
         throw new ReferenceError('No such ID in database');
     }
 
-    Object.assign(exsisting,trip);
+    Object.assign(exsisting, trip);
     return exsisting.save();
 
+}
+function deleteTrip(tripId) {
+    return Trip.deleteOne({ _id: tripId })
 }
 
 module.exports = {
@@ -81,5 +84,6 @@ module.exports = {
     getById,
     joinTrip,
     getUserById,
-    edit
+    edit,
+    deleteTrip
 }

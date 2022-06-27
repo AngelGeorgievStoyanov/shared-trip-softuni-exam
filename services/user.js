@@ -15,7 +15,8 @@ async function createUser(email,hashedPassword,gender){
 }
 
 async function getUserByEmail(email) {
-    return await User.findOne({ email: { $regex: email, $options: 'i' } });
+    return await User.findOne({ "email":`${email}` });
+   
 }
 
 async function getUserById(id){

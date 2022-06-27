@@ -25,6 +25,7 @@ router.post('/register', async (req, res) => {
             }
         }
         res.render('register', ctx);
+        console.log(err,'--err regis---')
     }
 })
 
@@ -49,6 +50,7 @@ router.post('/login', async (req, res) => {
                 password: req.body.password
             }
         };
+        console.log(err,'----errror---')
         res.render('login', ctx);
     }
 });

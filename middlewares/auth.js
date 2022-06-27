@@ -17,8 +17,9 @@ module.exports = () => (req, res, next) => {
     }
 
     async function register({ email, password, repass, gender }) {
-
+     
         const existingEmail = await userService.getUserByEmail(email);
+      
         if (existingEmail) {
             throw new Error('Email is taken');
         }
@@ -57,7 +58,7 @@ module.exports = () => (req, res, next) => {
 
     function createToken(user) {
         const userViewModel = { _id: user._id, email: user.email, gender: user.gender };
-        console.log(userViewModel, '==============')
+     
         const token = jwt.sign(userViewModel, TOKEN_SECRET);
         res.cookie(COOKIE_NAME, token, { httpOnly: true });
 

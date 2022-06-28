@@ -45,11 +45,13 @@ router.post('/create', async (req, res) => {
 
         res.redirect('/')
     } catch (err) {
+        let arr = err.message.split(', ')
         const ctx = {
             title: 'Create Trip',
-            error: err.message,
+            error: arr,
             trip
         }
+
 
         res.render('create', ctx);
     }
